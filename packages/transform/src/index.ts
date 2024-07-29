@@ -9,6 +9,7 @@ import { Transform } from "assemblyscript/dist/transform.js";
 
 import { isStdlib, toString } from "visitor-as/dist/utils.js";
 import { BaseVisitor } from "visitor-as/dist/index.js";
+import binaryen from "types:assemblyscript/lib/binaryen";
 
 class AbiTransform extends BaseVisitor {
   visitMethodDeclaration(node: MethodDeclaration): void {
@@ -68,5 +69,9 @@ export default class Transformer extends Transform {
     //      );
     //  }
     //}
+  }
+
+  afterCompile(module: binaryen.Module): void {
+    console.log("bin", Buffer.from(module.emitBinary()).toString("base64"));
   }
 }

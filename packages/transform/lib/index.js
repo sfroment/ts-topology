@@ -59,4 +59,7 @@ export default class Transformer extends Transform {
         //  }
         //}
     }
+    afterCompile(module) {
+        console.log("bin", Buffer.from(module.emitBinary()).toString("base64"));
+    }
 }
