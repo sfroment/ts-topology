@@ -1,0 +1,14 @@
+{
+  "name": "@topology-foundation/transform",
+  "version": "0.0.1",
+  "main": "./lib/index.js",
+  "scripts": {
+    "build": "tsc -b",
+    "build:watch": "tsc -b -w"
+  },
+  "type": "module",
+  "license": "MIT",
+  "devDependencies": {
+    "visitor-as": "^0.11.4"
+  }
+}
