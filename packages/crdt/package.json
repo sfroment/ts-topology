@@ -22,13 +22,16 @@
     "./wasm": {
       "types": "./dist/src/index.d.ts",
       "import": "./src/index.asc.ts"
+    },
+    "./src-export": {
+      "import": "./dist/srcExport.json"
     }
   },
   "scripts": {
     "asbuild": "yarn asbuild:debug && yarn asbuild:release",
     "asbuild:debug": "asc --config asconfig.json --target debug",
     "asbuild:release": "asc --config asconfig.json --target release",
-    "build": "tsc -b",
+    "build": "tsc -b && node scripts/export-src.js",
     "clean": "rm -rf dist/ node_modules/",
     "prepack": "tsc -b",
     "test": "vitest"

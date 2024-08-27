@@ -3,7 +3,7 @@ import * as topology from "@topology-foundation/node";
 import { Chat, addMessage, getMessages } from "./objects/chat";
 import { handleChatMessages } from "./handlers";
 import { GSet } from "@topology-foundation/crdt";
-import { newTopologyObject, TopologyObject } from "@topology-foundation/object";
+import { init, newTopologyObject, TopologyObject } from "@topology-foundation/object";
 import { loadFs } from "./utils";
 
 const node = new TopologyNode();
@@ -65,6 +65,7 @@ async function sendMessage(message: string) {
 
 async function main() {
   loadFs();
+  init();
   await node.start();
   render();
 

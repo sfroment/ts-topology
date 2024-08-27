@@ -1,8 +1,12 @@
 import * as crypto from "crypto";
 import { TopologyObject } from "./proto/object_pb.js";
-import { compileWasm } from "./wasm/compiler.js";
+import { compileWasm, loadDeps } from "./wasm/compiler.js";
 
 export * from "./proto/object_pb.js";
+
+export function init() {
+  loadDeps();
+}
 
 /* Creates a new TopologyObject */
 export async function newTopologyObject(peerId: string, path: string, id?: string, abi?: string): Promise<TopologyObject> {
