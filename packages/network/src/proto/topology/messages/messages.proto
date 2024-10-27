@@ -2,7 +2,7 @@ syntax = "proto3";
 package topology.network;
 
 import "google/protobuf/struct.proto";
-import "src/proto/object.proto";
+import "topology/object/object.proto";
 
 
 message Message {
