@@ -17,9 +17,12 @@ import type {
 	Address,
 	EventCallback,
 	PeerDiscovery,
+	PeerId,
 	Stream,
 	StreamHandler,
+	SubscriptionChangeData,
 } from "@libp2p/interface";
+import { peerIdFromString } from "@libp2p/peer-id";
 import { ping } from "@libp2p/ping";
 import {
 	type PubSubPeerDiscoveryComponents,
@@ -57,6 +60,7 @@ export interface DRPNetworkNodeConfig {
 	listen_addresses?: string[];
 	log_config?: LoggerOptions;
 	private_key_seed?: string;
+	peer_discovery?: boolean;
 	pubsub_peer_discovery_interval?: number;
 }
 
@@ -90,7 +94,7 @@ export class DRPNetworkNode {
 		const _peerDiscovery: Array<PeerDiscoveryFunction> = [
 			pubsubPeerDiscovery({
 				topics: ["drp::discovery"],
-				interval: this._config?.pubsub_peer_discovery_interval || 5000,
+				interval: this._config?.pubsub_peer_discovery_interval || 1000,
 			}),
 		];
 
@@ -227,6 +231,7 @@ export class DRPNetworkNode {
 
 		// needded as I've disabled the pubsubPeerDiscovery
 		this._pubsub?.subscribe("drp::discovery");
+		this._pubsub?.subscribe("drp::topic::discovery");
 	}
 
 	async stop() {
@@ -237,6 +242,83 @@ export class DRPNetworkNode {
 		await this.stop();
 		if (config) this._config = config;
 		await this.start();
+	}
+
+	async getPeerMultiaddrs(peerId: PeerId | string) {
+		const peerIdObj: PeerId = typeof peerId === "string" ? peerIdFromString(peerId) : peerId;
+
+		const peer = await this._node?.peerStore.get(peerIdObj);
+		if (!peer) return [];
+		return peer.addresses;
+	}
+
+	async isDialable(timeout = 5000) {
+		return waitForEvent(async (resolve, reject) => {
+			if (!this._node) {
+				resolve(false);
+				return;
+			}
+
+			if (await this._node?.isDialable(this._node.getMultiaddrs())) {
+				resolve(true);
+				return;
+			}
+
+			const checkDialable = async () => {
+				try {
+					if (await this._node?.isDialable(this._node.getMultiaddrs())) {
+						resolve(true);
+					}
+				} catch (error) {
+					reject(error);
+				} finally {
+					this._node?.removeEventListener("transport:listening", checkDialable);
+				}
+			};
+
+			this._node.addEventListener("transport:listening", checkDialable);
+		}, timeout);
+	}
+
+	async waitForPeer(peerId: string | PeerId, timeout = 5000) {
+		const peerIdObj: PeerId = typeof peerId === "string" ? peerIdFromString(peerId) : peerId;
+
+		return waitForEvent(async (resolve) => {
+			if (this._node?.getPeers().some((p) => p.equals(peerIdObj))) {
+				resolve(true);
+				return;
+			}
+
+			const peerConnectListener = (e: CustomEvent<PeerId>) => {
+				if (e.detail.equals(peerIdObj)) {
+					this._node?.removeEventListener("peer:connect", peerConnectListener);
+					resolve(true);
+				}
+			};
+			this._node?.addEventListener("peer:connect", peerConnectListener);
+		}, timeout);
+	}
+
+	async isSubscribed(topic: string, peerId: PeerId | string, timeout = 5000) {
+		const peerIdObj: PeerId = typeof peerId === "string" ? peerIdFromString(peerId) : peerId;
+
+		return waitForEvent(async (resolve) => {
+			if (this._pubsub?.getSubscribers(topic).some((p) => p.equals(peerIdObj))) {
+				resolve(true);
+				return;
+			}
+
+			const subscriptionChangeListener = (e: CustomEvent<SubscriptionChangeData>) => {
+				if (
+					e.detail.subscriptions.some((s) => s.topic === topic && e.detail.peerId.equals(peerIdObj))
+				) {
+					resolve(true);
+					this._pubsub?.removeEventListener("subscription-change", subscriptionChangeListener);
+				}
+			};
+
+			this._pubsub?.addEventListener("subscription-change", subscriptionChangeListener);
+		}, timeout);
 	}
 
 	private _sortAddresses(a: Address, b: Address) {
@@ -309,34 +391,6 @@ export class DRPNetworkNode {
 		} catch (e) {
 			log.error("::disconnect:", e);
 		}
-	}
-
-	async isDialable(timeout = 5000) {
-		return waitForEvent(async (resolve, reject) => {
-			if (!this._node) {
-				resolve(false);
-				return;
-			}
-
-			if (await this._node?.isDialable(this._node.getMultiaddrs())) {
-				resolve(true);
-				return;
-			}
-
-			const checkDialable = async () => {
-				try {
-					if (await this._node?.isDialable(this._node.getMultiaddrs())) {
-						resolve(true);
-					}
-				} catch (error) {
-					reject(error);
-				} finally {
-					this._node?.removeEventListener("transport:listening", checkDialable);
-				}
-			};
-
-			this._node.addEventListener("transport:listening", checkDialable);
-		}, timeout);
 	}
 
 	getBootstrapNodes() {
