@@ -35,7 +35,7 @@ import { webTransport } from "@libp2p/webtransport";
 import { type MultiaddrInput, multiaddr } from "@multiformats/multiaddr";
 import { WebRTC } from "@multiformats/multiaddr-matcher";
 import { Logger, type LoggerOptions } from "@ts-drp/logger";
-import { type Libp2p, type ServiceFactoryMap, createLibp2p } from "libp2p";
+import { type Libp2p, ServiceFactoryMap, createLibp2p } from "libp2p";
 import { fromString as uint8ArrayFromString } from "uint8arrays/from-string";
 
 import { Message } from "./proto/drp/network/v1/messages_pb.js";
