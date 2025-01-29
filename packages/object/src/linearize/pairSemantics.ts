@@ -17,7 +17,7 @@ export function linearizePairSemantics(
 			i++;
 			continue;
 		}
-		const anchor = order[i];
+		let anchor = order[i];
 		let j = i + 1;
 
 		while (j < order.length) {
