@@ -1,4 +1,4 @@
-import { ObjectPb, deserializeValue, serializeValue } from "@ts-drp/object";
+import { ObjectPb, deserializeValue, serializeValue } from "@sfroment/object";
 
 export function serializeStateMessage(state?: ObjectPb.DRPState): ObjectPb.DRPState {
 	const drpState = ObjectPb.DRPState.create();

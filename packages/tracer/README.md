@@ -30,7 +30,7 @@ This will start:
 ### Usage
 
 ```typescript
-import { enableTracing, traceFunc } from "@ts-drp/tracer";
+import { enableTracing, traceFunc } from "@sfroment/tracer";
 
 // Enable tracing for your service
 enableTracing("your-service-name", {
@@ -73,7 +73,7 @@ const tracedAsync = traceFunc("async-operation", async (id: string) => {
 });
 
 // Clean up (for testing purposes)
-import { disableTracing, flush } from "@ts-drp/tracer";
+import { disableTracing, flush } from "@sfroment/tracer";
 
 // Force flush traces before shutdown
 await flush();

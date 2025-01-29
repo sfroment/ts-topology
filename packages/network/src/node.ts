@@ -6,6 +6,7 @@ import {
 } from "@chainsafe/libp2p-gossipsub/score";
 import { noise } from "@chainsafe/libp2p-noise";
 import { yamux } from "@chainsafe/libp2p-yamux";
+import { autoTLS } from "@libp2p/auto-tls";
 import { autoNAT } from "@libp2p/autonat";
 import { type BootstrapComponents, bootstrap } from "@libp2p/bootstrap";
 import { circuitRelayServer, circuitRelayTransport } from "@libp2p/circuit-relay-v2";
@@ -22,6 +23,7 @@ import type {
 	StreamHandler,
 	SubscriptionChangeData,
 } from "@libp2p/interface";
+import { keychain } from "@libp2p/keychain";
 import { peerIdFromString } from "@libp2p/peer-id";
 import { ping } from "@libp2p/ping";
 import {
@@ -34,7 +36,7 @@ import * as filters from "@libp2p/websockets/filters";
 import { webTransport } from "@libp2p/webtransport";
 import { type MultiaddrInput, multiaddr } from "@multiformats/multiaddr";
 import { WebRTC } from "@multiformats/multiaddr-matcher";
-import { Logger, type LoggerOptions } from "@ts-drp/logger";
+import { Logger, type LoggerOptions } from "@sfroment/logger";
 import { type Libp2p, ServiceFactoryMap, createLibp2p } from "libp2p";
 import { fromString as uint8ArrayFromString } from "uint8arrays/from-string";
 
@@ -156,6 +158,11 @@ export class DRPNetworkNode {
 						IPColocationFactorWeight: 0,
 					}),
 					fallbackToFloodsub: false,
+				}),
+				keychain: keychain(),
+				// @ts-expect-error: it is not typed asdklasdjf;lasd
+				autoTLS: autoTLS({
+					autoConfirmAddress: true,
 				}),
 			};
 		}

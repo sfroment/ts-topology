@@ -1,7 +1,7 @@
 {
-	"name": "ts-drp",
+	"name": "sfroment",
 	"description": "The official TypeScript implementation of DRP protocol",
-	"version": "0.6.1",
+	"version": "0.6.6",
 	"license": "MIT",
 	"homepage": "https://topology.gg/",
 	"repository": {
@@ -19,8 +19,7 @@
 	"scripts": {
 		"bench": "vitest bench",
 		"build": "pnpm build:packages && pnpm build:examples",
-		"build:examples": "pnpm --filter 'ts-drp-example*' build",
-		"build:packages": "pnpm --filter '@ts-drp/*' build",
+		"build:packages": "pnpm --filter '@sfroment/*' build",
 		"clean": "pnpm --filter '@ts-drp/*' clean && rm -r node_modules/ docs/",
 		"cli": "tsx ./packages/node/src/run.ts",
 		"coverage": "pnpm tsx scripts/coverage.ts",
@@ -34,7 +33,7 @@
 		"proto-gen:object": "buf generate packages/object/src/proto -o packages/object/src/proto",
 		"release": "release-it",
 		"test": "vitest",
-		"watch": "pnpm --parallel --filter '@ts-drp/*' watch"
+		"watch": "pnpm --parallel --filter '@sfroment/*' watch"
 	},
 	"devDependencies": {
 		"@release-it-plugins/workspaces": "^4.2.0",

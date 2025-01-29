@@ -1,4 +1,4 @@
-import { ActionType, type DRP, type ResolveConflictsType, SemanticsType } from "@ts-drp/object";
+import { ActionType, type DRP, type ResolveConflictsType, SemanticsType } from "@sfroment/object";
 
 import { Pixel } from "./pixel";
 

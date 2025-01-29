@@ -35,7 +35,7 @@ pnpm install @ts-drp/node
 Then, you can import the DRP Node class and create a new instance:
 
 ```javascript
-import { DRPNode } from "@ts-drp/node";
+import { DRPNode } from "@sfroment/node";
 
 const node = new DRPNode();
 

@@ -4,7 +4,7 @@ import {
 	type ResolveConflictsType,
 	SemanticsType,
 	type Vertex,
-} from "@ts-drp/object";
+} from "@sfroment/object";
 
 export enum MapConflictResolution {
 	SetWins = 0,

@@ -1,4 +1,4 @@
-import { DRPNode } from "@ts-drp/node";
+import { DRPNode } from "@sfroment/node";
 
 const local_peer_id = "12D3KooWC6sm9iwmYbeQJCJipKTRghmABNz1wnpJANvSMabvecwJ";
 

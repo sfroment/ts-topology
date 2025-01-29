@@ -1,4 +1,4 @@
-import { Logger, type LoggerOptions } from "@ts-drp/logger";
+import { Logger, type LoggerOptions } from "@sfroment/logger";
 import { cloneDeep } from "es-toolkit";
 import { deepEqual } from "fast-equals";
 import * as crypto from "node:crypto";

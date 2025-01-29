@@ -1,8 +1,8 @@
 import type { GossipsubMessage } from "@chainsafe/libp2p-gossipsub";
 import type { EventCallback, StreamHandler } from "@libp2p/interface";
-import { Logger, type LoggerOptions } from "@ts-drp/logger";
-import { DRPNetworkNode, type DRPNetworkNodeConfig, NetworkPb } from "@ts-drp/network";
-import { type ACL, type DRP, DRPObject } from "@ts-drp/object";
+import { Logger, type LoggerOptions } from "@sfroment/logger";
+import { DRPNetworkNode, type DRPNetworkNodeConfig, NetworkPb } from "@sfroment/network";
+import { type ACL, type DRP, DRPObject } from "@sfroment/object";
 
 import { drpMessagesHandler } from "./handlers.js";
 import * as operations from "./operations.js";

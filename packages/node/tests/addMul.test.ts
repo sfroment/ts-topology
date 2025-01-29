@@ -1,4 +1,4 @@
-import { ObjectACL } from "@ts-drp/object";
+import { ObjectACL } from "@sfroment/object";
 import { describe, expect, test } from "vitest";
 
 import { AddMulDRP } from "../../blueprints/src/AddMul/index.js";

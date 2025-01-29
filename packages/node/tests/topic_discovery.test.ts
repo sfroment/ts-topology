@@ -1,4 +1,4 @@
-import { MapDRP } from "@ts-drp/blueprints";
+import { MapDRP } from "@sfroment/blueprints";
 import { beforeAll, describe, expect, test } from "vitest";
 
 import { DRPNode } from "../src/index.js";

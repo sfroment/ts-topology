@@ -1,5 +1,5 @@
-import { DRPNode } from "@ts-drp/node";
-import type { DRPObject } from "@ts-drp/object";
+import { DRPNode } from "@sfroment/node";
+import type { DRPObject } from "@sfroment/object";
 
 import { Canvas } from "./objects/canvas";
 

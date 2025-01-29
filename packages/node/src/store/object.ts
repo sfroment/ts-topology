@@ -1,4 +1,4 @@
-import type { DRPObject } from "@ts-drp/object";
+import type { DRPObject } from "@sfroment/object";
 
 export type DRPObjectStoreCallback = (objectId: string, object: DRPObject) => void;
 

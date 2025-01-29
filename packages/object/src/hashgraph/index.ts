@@ -411,6 +411,7 @@ export class HashGraph {
 		const reachable1 = this.reachablePredecessors.get(hash1);
 		const reachable2 = this.reachablePredecessors.get(hash2);
 		if (!reachable1 || !reachable2) return;
+		console.log("swaping reachable");
 		this.reachablePredecessors.set(hash1, reachable2);
 		this.reachablePredecessors.set(hash2, reachable1);
 	}
