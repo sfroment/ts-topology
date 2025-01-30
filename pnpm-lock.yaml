@@ -167,7 +167,7 @@ importers:
         version: 4.1.10
     devDependencies:
       '@sfroment/object':
-        specifier: 0.6.7
+        specifier: 0.6.8
         version: link:../object
 
   packages/logger:
@@ -242,7 +242,7 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0
       '@sfroment/logger':
-        specifier: ^0.6.7
+        specifier: ^0.6.8
         version: link:../logger
       it-length-prefixed:
         specifier: ^9.1.0
@@ -291,16 +291,16 @@ importers:
         specifier: ^2.1.3
         version: 2.4.0
       '@sfroment/blueprints':
-        specifier: 0.6.7
+        specifier: 0.6.8
         version: link:../blueprints
       '@sfroment/logger':
-        specifier: 0.6.7
+        specifier: 0.6.8
         version: link:../logger
       '@sfroment/network':
-        specifier: 0.6.7
+        specifier: 0.6.8
         version: link:../network
       '@sfroment/object':
-        specifier: 0.6.7
+        specifier: 0.6.8
         version: link:../object
       commander:
         specifier: ^13.0.0
@@ -334,7 +334,7 @@ importers:
         specifier: ^8.1.0
         version: 8.1.0
       '@sfroment/logger':
-        specifier: ^0.6.7
+        specifier: ^0.6.8
         version: link:../logger
       es-toolkit:
         specifier: 1.30.1
