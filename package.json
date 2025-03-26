@@ -3,7 +3,6 @@
 	"description": "The official TypeScript implementation of DRP protocol",
 	"version": "0.11.0",
 	"license": "MIT",
-	"homepage": "https://topology.gg/",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/drp-tech/ts-drp.git"
