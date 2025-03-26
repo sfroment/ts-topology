@@ -12,6 +12,17 @@ class ChatStateManager {
 		this._node = new DRPNode();
 	}
 
+	hasChat(): boolean {
+		try {
+			if (!this.chat) {
+				return false;
+			}
+			return true;
+		} catch {
+			return false;
+		}
+	}
+
 	get chat(): Chat {
 		if (!this.drp.drp) {
 			throw new Error("Chat DRP not initialized");
@@ -84,25 +95,88 @@ const renderChat = (chatState: ChatStateManager): void => {
 	if (chat.size === 0) {
 		const div = document.createElement("div");
 		div.innerHTML = "No messages yet";
+		div.className = "no-messages";
 		div.style.padding = "10px";
+		div.style.textAlign = "center";
+		div.style.color = "#6c757d";
 		element_chat.appendChild(div);
 		return;
 	}
 
-	for (const message of [...chat].sort()) {
-		const div = document.createElement("div");
-		div.innerHTML = message;
-		div.style.padding = "10px";
-		element_chat.appendChild(div);
+	// Get current user's peer ID
+	const currentPeerId = chatState.node.networkNode.peerId;
+
+	// Parse and sort messages by timestamp
+	const parsedMessages = [...chat]
+		.map((message) => {
+			const match = message.match(/^\(([^,]+), (.*), ([^)]+)\)$/);
+			if (match) {
+				const [_, timestamp, content, peerId] = match;
+				return {
+					original: message,
+					timestamp: parseInt(timestamp),
+					content,
+					peerId,
+					isSelf: peerId === currentPeerId,
+				};
+			}
+			return {
+				original: message,
+				timestamp: 0,
+				content: message,
+				peerId: "unknown",
+				isSelf: false,
+			};
+		})
+		.sort((a, b) => a.timestamp - b.timestamp);
+
+	for (const parsedMessage of parsedMessages) {
+		const messageDiv = document.createElement("div");
+		messageDiv.className = `message ${parsedMessage.isSelf ? "self" : ""}`;
+
+		if (parsedMessage.timestamp > 0) {
+			// Format timestamp
+			const date = new Date(parsedMessage.timestamp);
+			const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+
+			// Create timestamp element
+			const timestampDiv = document.createElement("div");
+			timestampDiv.className = "message-timestamp";
+			timestampDiv.textContent = formattedDate;
+
+			// Create sender element
+			const senderDiv = document.createElement("div");
+			senderDiv.className = "message-sender";
+			senderDiv.textContent = parsedMessage.isSelf ? "You" : `From: ${parsedMessage.peerId}`;
+
+			// Create content element
+			const contentDiv = document.createElement("div");
+			contentDiv.className = "message-content";
+			contentDiv.textContent = parsedMessage.content;
+
+			// Append all elements to message div
+			messageDiv.appendChild(timestampDiv);
+			messageDiv.appendChild(senderDiv);
+			messageDiv.appendChild(contentDiv);
+		} else {
+			// Fallback if message format doesn't match
+			messageDiv.textContent = parsedMessage.original;
+		}
+
+		element_chat.appendChild(messageDiv);
 	}
+
+	// Auto-scroll to bottom
+	element_chat.scrollTop = element_chat.scrollHeight;
 };
 
 const render = (chatState: ChatStateManager): void => {
-	renderChatId(chatState);
-	renderPeerId(chatState);
 	renderPeers(chatState);
 	renderDiscoveryPeers(chatState);
 	renderObjectPeers(chatState);
+	renderPeerId(chatState);
+	if (!chatState.hasChat()) return;
+	renderChatId(chatState);
 	renderChat(chatState);
 };
 
@@ -173,8 +247,7 @@ async function main(): Promise<void> {
 			return;
 		}
 		sendMessage(message, chatState);
-		const element_chat = <HTMLDivElement>document.getElementById("chat");
-		element_chat.scrollTop = element_chat.scrollHeight;
+		// Auto-scrolling is now handled in the renderChat function
 	};
 
 	button_create.addEventListener("click", () => void create());
@@ -183,11 +256,12 @@ async function main(): Promise<void> {
 
 	// periodically render the peers
 	setInterval(() => {
-		renderChatId(chatState);
 		renderPeers(chatState);
 		renderDiscoveryPeers(chatState);
 		renderObjectPeers(chatState);
-	}, 1000);
+		if (!chatState.hasChat()) return;
+		renderChatId(chatState);
+	}, 3000);
 }
 
 void main();
