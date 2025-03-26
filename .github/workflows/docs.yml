@@ -30,6 +30,9 @@ jobs:
           cp -r ./cache/* ./docs
           mkdir -p ./docs/examples
           cp -r ./examples/chat/dist ./docs/examples/chat
+          cp -r ./examples/grid/dist ./docs/examples/grid
+          cp -r ./examples/canvas/dist ./docs/examples/canvas
+          cp -r ./examples/local-bootstrap/dist ./docs/examples/local-bootstrap
           find ./docs/examples -type f -name 'index.html' -exec sed -i 's|src="/assets/|src="assets/|g' {} +
           find ./docs/examples -type f -name 'index.html' -exec sed -i 's|href="/assets/|href="assets/|g' {} +
       - name: Upload artifact
