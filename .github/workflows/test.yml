@@ -32,5 +32,7 @@ jobs:
       - shell: bash
         run: |
           pnpm run coverage
-      - name: "Report coverage"
-        uses: davelosert/vitest-coverage-report-action@v2
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
